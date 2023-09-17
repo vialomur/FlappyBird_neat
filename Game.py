@@ -7,7 +7,7 @@ import random
 
 # Create a function to add a new block
 def add_block():
-    y = random.randint(50, HEIGHT - 50)  # Randomize the block's vertical position
+    y = random.randint(10, HEIGHT - 40)  # Randomize the block's vertical position
     new_block = Block(WIDTH, y)
     blocks.append(new_block)
 
@@ -33,13 +33,23 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
 
-    pygame.draw.circle(screen, "red", (bird.x, bird.y), 40)
+    pygame.draw.circle(screen, "red", (bird.x, bird.y), bird.size)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         bird.swing()
 
+    if keys[pygame.K_s]:
+        bird.swing_down()
+
     bird.fall()
+
+    if bird.y <= 0:
+        bird.y = 0
+
+    if bird.y >= HEIGHT - bird.size:
+        bird.y = HEIGHT - bird.size
+        bird.fall_speed = 3
 
     # Add new blocks at regular intervals
     if time.time() - time_start > block_respawn_time:

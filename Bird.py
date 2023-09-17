@@ -5,26 +5,33 @@ class Bird:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.size = 40
         self.jump_cooldown = time.time()
-        self.fall_speed = 1
+        self.swing_down_cooldown = time.time()
+        self.fall_speed = 3
         self.fall_cooldown = time.time()
 
     def swing(self):
         if time.time() - self.jump_cooldown > 0.25:
             self.y -= 50
             self.jump_cooldown = time.time()
-            self.fall_speed = 1
+            self.fall_speed = 3
+
+    def swing_down(self):
+        if time.time() - self.swing_down_cooldown > 0.25:
+            self.y += 50
+            self.swing_down_cooldown = time.time()
 
     def fall(self):
         if time.time() - self.fall_cooldown > 0.1:
             self.fall_cooldown = time.time()
-            self.fall_speed += 1.3
+            self.fall_speed *= 1.1
             self.y += self.fall_speed
 
 
 def bird_collides_with_block(bird, block):
     # Calculate the radius of the bird's bounding circle
-    bird_radius = 40  # Assuming the bird's circle has a fixed radius
+    bird_radius = bird.size  # Assuming the bird's circle has a fixed radius
 
     # Calculate the coordinates of the center of the bird's bounding circle
     bird_center_x = bird.x
