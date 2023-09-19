@@ -5,6 +5,16 @@ import time
 import random
 
 
+def set_text(string, coordx, coordy, fontSize):  # Function to set text
+
+    font = pygame.font.Font('freesansbold.ttf', fontSize)
+    # (0, 0, 0) is black, to make black text
+    text = font.render(string, True, (0, 0, 240))
+    textRect = text.get_rect()
+    textRect.center = (coordx, coordy)
+    return (text, textRect)
+
+
 # Create a function to add a new block
 def add_block():
     y = random.randint(10, HEIGHT - 40)  # Randomize the block's vertical position
@@ -33,7 +43,7 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
 
-    pygame.draw.circle(screen, "red", (bird.x, bird.y), bird.size)
+    bird.draw(screen)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
@@ -67,6 +77,10 @@ while running:
     for block in blocks:
         if bird_collides_with_block(bird, block):
             running = False  # Game over logic
+
+    bird.update_score()
+    totalText = set_text(str(bird.score), 700, 250, 60)
+    screen.blit(totalText[0], totalText[1])
     # flip() the display to put your work on screen
     pygame.display.flip()
 

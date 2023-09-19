@@ -1,4 +1,6 @@
+import random
 import time
+import pygame
 
 
 class Bird:
@@ -10,6 +12,17 @@ class Bird:
         self.swing_down_cooldown = time.time()
         self.fall_speed = 3
         self.fall_cooldown = time.time()
+        self.colour = random.choice(["red", "blue", "yellow", "green"])
+        self.score = 0
+        self.score_time = time.time()
+
+    def update_score(self):
+        if time.time() - self.score_time > 0.5:
+            self.score += 1
+            self.score_time = time.time()
+
+    def draw(self, screen):
+        pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size)
 
     def swing(self):
         if time.time() - self.jump_cooldown > 0.25:
